@@ -14,12 +14,15 @@ import com.mockproject.service.ProductsService;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+	
 	@Autowired
 	private ProductsService productService;
 	
+	// localhost:8080/index
 	@GetMapping("index")
-	public String doGetIndex() {
-		
+	public String doGetIndex(Model model) {
+		List<Products> products = productService.findAll();
+		model.addAttribute("products", products);
 		return "user/index";
 	}
 }
