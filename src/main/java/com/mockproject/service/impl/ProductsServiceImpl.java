@@ -19,7 +19,13 @@ public class ProductsServiceImpl implements ProductsService{
 	@Override
 	public List<Products> findAll() {
 		// TODO Auto-generated method stub
-		return repo.findAll();
+		return repo.findAllAvailable();
+		
+		//test Query
+		/*
+		 * return repo.findByIsDeletedAndQuantityGreaterThan(Boolean.FALSE, 0);
+		 * */
+		
 	}
 
 	@Override
