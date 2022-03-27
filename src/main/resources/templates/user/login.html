@@ -39,13 +39,11 @@
 					<img th:src="@{/user/img/login_icon.png}" style="width: 20%; height: auto" id="icon" alt="User Icon" />
 				</div>
 				<!-- Login Form -->
-				<form method="POST" th:object="${userRequest}" th:action="@{/login}">
+				<form>
 					<input type="text" id="username" class="fadeIn second" name="login" 
-							placeholder="Username"
-							th:field="*{username}"/>
+							placeholder="Username"/>
 					<input type="password" id="hashPassword" class="fadeIn third" name="login" 
-							placeholder="Password"
-							th:field="*{hashPassword}"/>
+							placeholder="Password"/>
 					<input type="submit" class="fadeIn fourth" value="Log In" />
 				</form>
 				<h5 style="color:red" th:text="${message}"></h5>

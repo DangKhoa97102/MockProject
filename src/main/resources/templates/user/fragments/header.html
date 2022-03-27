@@ -14,11 +14,9 @@
 	                    <div class="shopping-item">
 	                        <a href="">
 	                        	Cart - <span class="cart-amunt" 
-	                        				id="headerTotalPrice"
-	                        				th:text="${#numbers.formatCurrency(session.currentCart.totalPrice)}"></span> 
+	                        				id="headerTotalPrice">123</span> 
 	                        	<i class="fa fa-shopping-cart"></i> <span class="product-count"
-	                        												id="headerTotalQuantity"
-	                        												th:text="${session.currentCart.totalQuantity}"></span></a>
+	                        												id="headerTotalQuantity">1</span></a>
 	                    </div>
 	                </div>
 	            </div>
@@ -38,11 +36,11 @@
 	                </div> 
 	                <div class="navbar-collapse collapse">
 	                    <ul class="nav navbar-nav">
-	                    	<li th:if="${session.currentUser != null}">
-	                    		<a href="">Welcome, <span th:text="${session.currentUser.username}"></a>
+	                    	<li>
+	                    		<a href="">Welcome, <span>username</span></a>
 	                    	</li>
 	                        <li>
-	                        	<a th:href="@{/index}">Home</a>
+	                        	<a href="">Home</a>
 	                        </li>
 	                        <li>
 	                        	<a href="">Điện thoại</a>
@@ -50,14 +48,14 @@
 	                        <li>
 	                        	<a href="">Laptop</a>
 	                        </li>
-	                        <li th:if="${session.currentUser == null}">
-	                        	<a th:href="@{/login}">Login</a>
+	                        <li>
+	                        	<a href="">Login</a>
 	                        </li>
-	                        <li th:if="${session.currentUser == null}">
-	                        	<a th:href="@{/register}">Register</a>
+	                        <li>
+	                        	<a href="">Register</a>
 	                        </li>
-	                        <li th:if="${session.currentUser != null}">
-	                    		<a th:href="@{/logout}">Logout</a>
+	                        <li>
+	                    		<a href="">Logout</a>
 	                    	</li>
 	                    </ul>
 	                </div>

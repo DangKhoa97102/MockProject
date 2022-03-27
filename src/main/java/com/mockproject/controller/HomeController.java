@@ -25,4 +25,9 @@ public class HomeController {
 		model.addAttribute("products", products);
 		return "user/index";
 	}
+	
+	@GetMapping("login")
+	public String doGetLogin() {
+			return "user/login";
+	}
 }
