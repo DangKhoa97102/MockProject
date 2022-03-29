@@ -40,7 +40,7 @@
 	                    		<a href="">Welcome, <span th:text="${session.currentUser.username}"></span></a>
 	                    	</li>
 	                        <li>
-	                        	<a href="">Home</a>
+	                        	<a th:href="@{/index}">Home</a>
 	                        </li>
 	                        <li>
 	                        	<a href="">Điện thoại</a>
@@ -48,14 +48,14 @@
 	                        <li>
 	                        	<a href="">Laptop</a>
 	                        </li>
-	                        <li>
-	                        	<a href="">Login</a>
+	                        <li th:if="${session.currentUser == null}">
+	                        	<a th:href="@{/login}">Login</a>
 	                        </li>
-	                        <li>
-	                        	<a href="">Register</a>
+	                        <li th:if="${session.currentUser == null}">
+	                        	<a th:href="@{/register}">Register</a>
 	                        </li>
-	                        <li>
-	                    		<a href="">Logout</a>
+	                        <li th:if="${session.currentUser != null}">
+	                    		<a th:href="@{/logout}">Logout</a>
 	                    	</li>
 	                    </ul>
 	                </div>

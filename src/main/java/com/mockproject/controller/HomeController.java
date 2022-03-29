@@ -34,12 +34,29 @@ public class HomeController {
 		model.addAttribute("products", products);
 		return "user/index";
 	}
-
+	
+	//Login
 	@GetMapping("login")
 	public String doGetLogin(Model model) {
 		model.addAttribute("userRequest", new Users());
 		return "user/login";
 	}
+	
+	//Logout
+	@GetMapping("logout")
+	public String doGetLogout(HttpSession session) {
+		session.removeAttribute("currentUser");
+		return "redirect:/index";
+	}
+	
+	//Register
+	@GetMapping("register")
+	public String doGetRegister(Model model) {
+		model.addAttribute("userRegister", new Users());
+		return "user/register";
+	}
+	
+	
 
 	// forward != redirect ( chuyển hướng và chuyển tiếp )
 	@PostMapping("login")
@@ -51,5 +68,18 @@ public class HomeController {
 		} else {
 			return "redirect:/login";
 		}
+	}
+	
+	//Post Mapping Register
+	@PostMapping("register")
+	public String doPostRegister(@ModelAttribute Users userRegister) {
+		Users userResponse = usersService.save(userRegister);
+		if(userResponse != null) {
+			return "redirect:/index";
+		} else {
+			return "redirect:/register";
+		}
+		
+		
 	}
 }

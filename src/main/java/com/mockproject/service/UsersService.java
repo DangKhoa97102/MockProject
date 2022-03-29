@@ -8,5 +8,5 @@ public interface UsersService {
 
 	Users doLogin(String username, String password);
 	
-	
+	Users save(Users user);
 }
