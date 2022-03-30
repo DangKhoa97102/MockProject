@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.mockproject.entity.Roles;
 import com.mockproject.entity.Users;
 import com.mockproject.repository.UsersRepo;
-import com.mockproject.service.ProductsService;
 import com.mockproject.service.UsersService;
 
 @Service
