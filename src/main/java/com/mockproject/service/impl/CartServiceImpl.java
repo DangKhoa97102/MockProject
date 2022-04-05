@@ -32,13 +32,7 @@ public class CartServiceImpl implements CartService {
 		
 		if (!listDetail.containsKey(productId)) {
 			// Thêm mới
-			CartDetailDto cartDetail = new CartDetailDto();
-			cartDetail.setProductID(productId);
-			cartDetail.setQuantity(quantity);
-			cartDetail.setPrice(product.getPrice());
-			cartDetail.setName(product.getName());
-			cartDetail.setImgUrl(product.getImgUrl());
-			cartDetail.setSlug(product.getSlug());
+			CartDetailDto cartDetail = addNewCartDetail(product, quantity);
 			listDetail.put(productId, cartDetail); // save to Map :3			
 		} else if(quantity > 0) {
 			// Update
@@ -55,7 +49,9 @@ public class CartServiceImpl implements CartService {
 			// Delete
 			listDetail.remove(productId);
 			}
-		return null;
+		cart.setTotalQuantity(getTotalQuantity(cart));
+		cart.setTotalPrice(getTotalPrice(cart));
+		return cart;
 	}
 
 	@Override
@@ -63,7 +59,7 @@ public class CartServiceImpl implements CartService {
 		Integer totalQuantity = 0;
 		HashMap<Long, CartDetailDto> listDetail = cart.getListDetail();
 		for (CartDetailDto cartDetail : listDetail.values()) {
-			totalQuantity = totalQuantity + cartDetail.getQuantity();
+			totalQuantity += cartDetail.getQuantity();
 		}
 		return totalQuantity;
 	}
@@ -73,9 +69,20 @@ public class CartServiceImpl implements CartService {
 		Double totalPrice = 0D;
 		HashMap<Long, CartDetailDto> listDetail = cart.getListDetail();
 		for (CartDetailDto cartDetail : listDetail.values()) {
-			totalPrice = totalPrice + cartDetail.getPrice();
+			totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
 		}
 		return totalPrice;
+	}
+	
+	private CartDetailDto addNewCartDetail(Products product, Integer quantity) {
+		CartDetailDto cartDetail = new CartDetailDto();
+		cartDetail.setProductId(product.getId());
+		cartDetail.setQuantity(quantity);
+		cartDetail.setPrice(product.getPrice());
+		cartDetail.setName(product.getName());
+		cartDetail.setImgUrl(product.getImgUrl());
+		cartDetail.setSlug(product.getSlug());
+		return cartDetail;
 	}
 
 }

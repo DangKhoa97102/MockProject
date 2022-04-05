@@ -16,7 +16,7 @@ public class CartDetailDto implements Serializable{
 	private static final long serialVersionUID = -4879107258819494620L;
 	
 	private Long orderId;
-	private Long productID;
+	private Long productId;
 	private Double price;
 	private Integer quantity;
 	private String name;

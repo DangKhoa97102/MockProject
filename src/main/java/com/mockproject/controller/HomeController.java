@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mockproject.constant.SessionConstant;
 import com.mockproject.entity.Products;
 import com.mockproject.entity.Users;
 import com.mockproject.service.ProductsService;
 import com.mockproject.service.UsersService;
+import com.mockproject.util.SessionUtil;
 
 @Controller
 @RequestMapping("/")
@@ -45,7 +47,7 @@ public class HomeController {
 	//Logout
 	@GetMapping("logout")
 	public String doGetLogout(HttpSession session) {
-		session.removeAttribute("currentUser");
+		session.removeAttribute(SessionConstant.CURRENT_USER);
 		return "redirect:/index";
 	}
 	
@@ -63,7 +65,7 @@ public class HomeController {
 	public String doPostLogin(@ModelAttribute("userRequest") Users userRequest, HttpSession session) {
 		Users userResponse = usersService.doLogin(userRequest.getUsername(), userRequest.getHashPassword());
 		if(userResponse != null) {
-			session.setAttribute("currentUser", userResponse);
+			session.setAttribute(SessionConstant.CURRENT_USER, userResponse);
 			return "redirect:/index";
 		} else {
 			return "redirect:/login";
