@@ -3,6 +3,7 @@ package com.mockproject.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,11 @@ public interface ProductsRepo extends JpaRepository<Products, Long>{
 	 * 	LessThan : <
 	 * 	findByIsDeleted --> SELECT * FROM products WHERE isDeleted = ?
 	*/
+	
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE  products SET quantity = ? WHERE id = ?", nativeQuery = true )
+	void updateQuantity(Integer newQuantity, Long productId);
+	
 	
 	
 	// Supported keywords inside method namesSupported keywords inside method names	

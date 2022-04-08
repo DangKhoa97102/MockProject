@@ -35,6 +35,12 @@ public class ProductsServiceImpl implements ProductsService{
 		return optional.isPresent() ? optional.get() : null;
 	}
 
+	@Override
+	public void updateQuantity(Integer newQuantity, Long productId) {
+		repo.updateQuantity(newQuantity, productId);
+		
+	}
+
 	
 	
 }

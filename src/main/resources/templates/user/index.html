@@ -41,7 +41,7 @@
 </head>
 <body>
 
-	<div th:replace="user/fragments/header :: header"></div>
+	<th:block th:include="user/fragments/header"/>
 
 	<div class="product-big-title-area">
 		<div class="container">
@@ -105,7 +105,7 @@
 		</div>
 	</div>
 
-	<div th:replace="user/fragments/footer :: footer"></div>
+	<th:block th:include="user/fragments/footer"/>
 
 	<!-- Latest jQuery form server -->
 	<script src="https://code.jquery.com/jquery.min.js"></script>

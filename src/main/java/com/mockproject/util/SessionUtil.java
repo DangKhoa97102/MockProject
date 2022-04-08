@@ -15,4 +15,8 @@ public class SessionUtil {
 		}
 	}
 	
+	public static CartDto getCurrentCart(HttpSession session) {
+		return (CartDto) session.getAttribute(SessionConstant.CURRENT_CART);
+	}
+	
 }

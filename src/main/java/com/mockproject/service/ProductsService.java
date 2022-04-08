@@ -10,4 +10,5 @@ public interface ProductsService {
 	
 	Products findById(Long id);
 	
+	void updateQuantity(Integer newQuantity, Long productId);
 }

@@ -29,7 +29,7 @@
     <link rel="stylesheet" th:href="@{/user/css/login.css}">
   </head>
   <body>
-	<div th:replace="user/fragments/header :: header"></div>
+	<th:block th:include="user/fragments/header"/>
 
 	<div class="container">
 		<div class="wrapper fadeInDown">
@@ -59,7 +59,7 @@
 		</div>
 	</div>
 
-    <div th:replace="user/fragments/footer :: footer"></div>
+    <th:block th:include="user/fragments/footer"/>
    
     <!-- Latest jQuery form server -->
     <script src="https://code.jquery.com/jquery.min.js"></script>

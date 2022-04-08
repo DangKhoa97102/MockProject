@@ -156,7 +156,9 @@
 										<td class="product-quantity"><div
 												class="quantity buttons_added">
 												<input type="number" class="input-text qty text" title="Qty"
-													min="1" step="1" th:value="${detail.value.quantity}">
+													th:id="quantity + ${detail.key}" min="1" step="1"
+													th:value="${detail.value.quantity}"
+													th:attr="onchange='updateProduct(\'' + ${detail.key} + '\')'">
 											</div></td>
 										<td class="product-subtotal"><span
 											style="font-size: 12px" class="amount"
@@ -177,7 +179,8 @@
 									</tr>
 									<tr>
 										<td colspan="12"><input type="submit" value="Checkout"
-											name="proceed" class="checkout-button button alt wc-forward" />
+											name="proceed" class="checkout-button button alt wc-forward" 
+											th:attr="onclick='checkout()'"/>
 										</td>
 									</tr>
 								</tbody>
@@ -190,12 +193,15 @@
 											<tr class="order-total">
 												<th>Order Total Quantity</th>
 												<td><strong><span id="orderTotalQty"
-														class="amount"></span></strong></td>
+														class="amount"
+														th:text="${session.currentCart.totalQuantity}"> </span></strong></td>
 											</tr>
 											<tr class="order-total">
 												<th>Order Total Price</th>
 												<td><strong><span id="orderTotalPri"
-														class="amount"></span></strong></td>
+														class="amount"
+														th:text="${#numbers.formatCurrency(session.currentCart.totalPrice)}">
+													</span></strong></td>
 											</tr>
 										</tbody>
 									</table>
@@ -208,7 +214,7 @@
 		</div>
 	</div>
 
-	<div th:replace="user/fragments/footer :: footer"></div>
+	<th:block th:include="user/fragments/footer" />
 
 	<!-- Latest jQuery form server -->
 	<script src="https://code.jquery.com/jquery.min.js"></script>
@@ -234,10 +240,77 @@
 
 	<script>
 		function removeProduct(productId) {
-			var url = '/cart/update?productId=' + productId +'&quantity=0&isReplace=true';
-			$.get(url).done(function(fragment){
+			var url = '/cart/update?productId=' + productId
+					+ '&quantity=0&isReplace=true';
+			$.get(url).done(function(fragment) {
 				$('#viewCartFragment').replaceWith(fragment);
+				callApiRefreshCart();
 			});
+
+		}
+
+		function updateProduct(productId) {
+			var idInput = '#quantity' + productId;
+			var newQuantity = $(idInput).val();
+			var url = '/cart/update?productId=' + productId + '&quantity='
+					+ newQuantity + '&isReplace=true';
+			$.get(url).done(function(fragment) {
+				$('#viewCartFragment').replaceWith(fragment);
+				callApiRefreshCart();
+			});
+
+		}
+		
+		function checkout() {
+			var address = $('#address').val();
+			var phone = $('#phone_number').val();
+			var url = '/api/cart/checkout?address=' + address + '&phone=' + phone;
+			$.ajax({
+				url: url,
+				type: 'GET',
+				statusCode: {
+					200: handle200,
+					400: handle400,
+					403: handle403
+				}
+			})
+		}		
+		
+		function handle200() {
+			alert('Your payment was created successfully!');
+			window.location.href = '/index';
+		}
+		
+		function handle400() {
+			alert('Checkout failed, try again!');
+		}
+		
+		function handle403() {
+			alert('Please login before checkout');
+			window.location.href = '/login';
+		}
+
+		function callApiRefreshCart() {
+			$.ajax({
+						url : '/api/cart/refresh',
+						type : 'GET',
+						dataType : 'json',
+						success : function(data) {
+							$('#headerTotalPrice').text(numberWithDot(data.totalPrice));
+							$('#headerTotalQuantity').text(data.totalQuantity);
+							$('#orderTotalPri').text(numberWithDot(data.totalPrice));
+							$('#orderTotalQty').text(data.totalQuantity);
+						},
+						error : function(error) {
+							alert('Api refresh cart met error.');
+						}
+
+					});
+
+			function numberWithDot(x) {
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+						+ ' ₫';
+			}
 		}
 	</script>
 

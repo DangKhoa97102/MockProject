@@ -2,13 +2,19 @@ package com.mockproject.service.impl;
 
 import java.util.HashMap;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mockproject.dto.CartDetailDto;
 import com.mockproject.dto.CartDto;
+import com.mockproject.entity.Orders;
 import com.mockproject.entity.Products;
+import com.mockproject.entity.Users;
 import com.mockproject.service.CartService;
+import com.mockproject.service.OrderDetailsService;
+import com.mockproject.service.OrdersService;
 import com.mockproject.service.ProductsService;
 
 @Service
@@ -17,6 +23,12 @@ public class CartServiceImpl implements CartService {
 	// Lấy thông tin từ bảng products
 	@Autowired
 	private ProductsService productsService;
+	
+	@Autowired
+	private OrderDetailsService orderDetailsService;
+	
+	@Autowired
+	private OrdersService ordersService;
 
 	@Override
 	public CartDto updateCart(CartDto cart, Long productId, Integer quantity, Boolean isReplace) {
@@ -83,6 +95,35 @@ public class CartServiceImpl implements CartService {
 		cartDetail.setImgUrl(product.getImgUrl());
 		cartDetail.setSlug(product.getSlug());
 		return cartDetail;
+	}
+
+	@Transactional
+	@Override
+	public void insert(CartDto cart, Users user, String address, String phone) throws Exception {
+		Orders order = new Orders();
+		order.setAddress(address);
+		order.setPhone(phone);
+		order.setUser(user);
+		
+		try {
+			Orders orderResponse = ordersService.insert(order) ;
+			
+			for (CartDetailDto cartDetail : cart.getListDetail().values()) {
+				// insert Order_details
+				cartDetail.setOrderId(orderResponse.getId());
+				orderDetailsService.insert(cartDetail);
+				
+				// Update quantity of products
+				Products product = productsService.findById(cartDetail.getProductId());
+				Integer newQuantity = product.getQuantity() - cartDetail.getQuantity();
+				productsService.updateQuantity(newQuantity, product.getId());
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception("Can't insert cart to DataBase.");
+		}
+		
 	}
 
 }
