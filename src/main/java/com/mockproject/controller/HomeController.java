@@ -17,7 +17,6 @@ import com.mockproject.entity.Products;
 import com.mockproject.entity.Users;
 import com.mockproject.service.ProductsService;
 import com.mockproject.service.UsersService;
-import com.mockproject.util.SessionUtil;
 
 @Controller
 @RequestMapping("/")
