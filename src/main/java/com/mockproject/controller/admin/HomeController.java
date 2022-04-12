@@ -21,7 +21,5 @@ public class HomeController {
 		model.addAttribute("chartData", chartData);
 		
 		return "admin/index";
-	}
-	
-	
+	}	
 }

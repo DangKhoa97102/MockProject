@@ -1,10 +1,13 @@
 package com.mockproject.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.mockproject.entity.Roles;
 import com.mockproject.entity.Users;
@@ -49,6 +52,35 @@ public class UsersServiceImpl implements UsersService{
 		// user mới tạo thì isDeleted phải là 0.
 		user.setIsDeleted(Boolean.FALSE);
 		return repo.saveAndFlush(user);
+	}
+
+	@Override
+	public List<Users> findAll() {
+		return repo.findByIsDeleted(Boolean.FALSE);
+	}
+
+	@Override
+	@Transactional
+	public void deleteLogical(String username) {
+		repo.deleteLogical(username);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	@Transactional
+	public void update(Users user) {
+		if (StringUtils.isEmpty(user.getHashPassword())) {
+			repo.updateNonPass(user.getEmail(), user.getFullname(), user.getUsername());
+		} else {
+			String hashPassword = bcrypt.encode(user.getHashPassword());
+			user.setHashPassword(hashPassword);
+			repo.update(user.getEmail(), user.getHashPassword(), user.getFullname(), user.getUsername());
+		}
+	}
+
+	@Override
+	public Users findByUsername(String username) {
+		return repo.findByUsername(username);
 	}
 
 	
